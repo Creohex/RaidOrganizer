@@ -26,32 +26,18 @@ local groupclasses = { {}, {}, {}, {}, {}, {}, {}, {}, {} }
 local newAttrib = {true, true, true, true, true, true,true, true, true}
 local classTab = {}
 
-local faction = UnitFactionGroup("player")
-if faction == "Alliance" then
-	classTab = {{"PRIEST","DRUID","PALADIN"},
-	{"WARRIOR","DRUID"},
-	{"WARRIOR","ROGUE","MAGE"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID"},
-	{"WARLOCK"},
-	{"MAGE"},
-	{"PRIEST"},
-	{"DRUID"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "PALADIN", "WARRIOR"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "PALADIN", "WARRIOR"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "PALADIN", "WARRIOR"}}
-else
-	classTab = {{"PRIEST","DRUID","SHAMAN"},
-	{"WARRIOR","DRUID"},
-	{"WARRIOR","ROGUE","MAGE"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID"},
-	{"WARLOCK"},
-	{"MAGE"},
-	{"PRIEST"},
-	{"DRUID"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "SHAMAN", "WARRIOR"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "SHAMAN", "WARRIOR"},
-	{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "SHAMAN", "WARRIOR"}}
-end
+classTab = {
+{"PRIEST","DRUID","PALADIN","SHAMAN"},
+{"WARRIOR","DRUID"},
+{"WARRIOR","ROGUE","MAGE"},
+{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID"},
+{"WARLOCK"},
+{"MAGE"},
+{"PRIEST"},
+{"DRUID"},
+{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "PALADIN", "SHAMAN", "WARRIOR"},
+{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "PALADIN", "SHAMAN", "WARRIOR"},
+{"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID", "PALADIN", "SHAMAN", "WARRIOR"}}
 
 local TOTAL_TAB_NB = 11
 local SYNC_TAB_NB = 9
@@ -71,11 +57,11 @@ local change_id = 0
 local level_of_button = -1;
 local tempsetup = {}
 
-local barBackgroundTextures = {	["Interface/Tooltips/UI-Tooltip-Background"] = "Tooltip", 
+local barBackgroundTextures = {	["Interface/Tooltips/UI-Tooltip-Background"] = "Tooltip",
 								["Interface/DialogFrame/UI-DialogBox-Background"] = "Dialog",
 								["Interface\\AddOns\\RaidOrganizer\\Textures\\Background\\UI-Tooltip-Background.tga"] = "Tooltip_square",
 								["Interface/Buttons/WHITE8x8"] = "WHITE8X8", [""] = "None"}
-								
+
 local barBackgroundEdges = {["Interface/Tooltips/UI-Tooltip-Border"] = "Tooltip",
 							["Interface/DialogFrame/UI-DialogBox-Border"] = "Dialog",
 							["Interface\\AddOns\\RaidOrganizer\\Textures\\Border\\roth.tga"] = "roth",
@@ -86,7 +72,7 @@ local barBackgroundEdges = {["Interface/Tooltips/UI-Tooltip-Border"] = "Tooltip"
 							[""] = "None"}
 
 local ROBar_backdrop = {
-  bgFile = "Interface\Tooltips\UI-Tooltip-Background",  
+  bgFile = "Interface\Tooltips\UI-Tooltip-Background",
   edgeFile = "Interface\Tooltips\UI-Tooltip-Border",
   tile = true,
   tileSize = 12,
@@ -178,7 +164,7 @@ RaidOrganizer.options = {
 							hasAlpha = true,
 							get = function() return RaidOrganizerButtonsBar:GetBackdropColor() end,
 							set = function(r,g,b,a) RaidOrganizer.db.char.color.r = r; RaidOrganizer.db.char.color.g = g; RaidOrganizer.db.char.color.b = b; RaidOrganizer.db.char.color.a = a; return RaidOrganizerButtonsBar:SetBackdropColor(r,g,b,a); end,
-						},	
+						},
 					}
 				},
 				alpha = {
@@ -492,7 +478,7 @@ RaidOrganizer.options = {
 			name = 'Show Bar',
 			desc = 'Show/Hide shortcut button bar',
 			func = function() RaidOrganizer.db.char.showBar = not RaidOrganizer.db.char.showBar; RaidOrganizer:ShowBar() end,
-				
+
         },
 		showDialog = {
             type = 'execute',
@@ -640,7 +626,7 @@ RaidOrganizer:RegisterDefaults('account', {
 	}
 })
 
-RaidOrganizer.SLOT_PER_GROUP_PER_TAB = {{8, 8, 8, 8, 8, 8, 0, 0, 0}, 
+RaidOrganizer.SLOT_PER_GROUP_PER_TAB = {{8, 8, 8, 8, 8, 8, 0, 0, 0},
 										{3, 3, 3, 3, 3, 3, 3, 3, 0},
 										{5, 5, 5, 5, 5, 5, 5, 5, 0},
 										{2, 2, 2, 2, 2, 2, 2, 2, 0},
@@ -715,7 +701,7 @@ function RaidOrganizer:OnInitialize() -- {{{
 	if not RO_HybrideSpec then
 		RO_HybrideSpec = {}
 	end
-	
+
 	if not RO_CurrentSet then
 		RO_CurrentSet = {L["SET_DEFAULT"], L["SET_DEFAULT"], L["SET_DEFAULT"], L["SET_DEFAULT"], L["SET_DEFAULT"], L["SET_DEFAULT"], L["SET_DEFAULT"], L["SET_DEFAULT"], L["SET_DEFAULT"]}
 	end
@@ -735,17 +721,17 @@ function RaidOrganizer:OnInitialize() -- {{{
 			RO_CurrentSet[i] = L["SET_DEFAULT"]
 		end
 	end
-    
+
 	if not RO_syncTab then
 		RO_syncTab = {false, false, false, false, false, false, false, false, false}
 	end
-	
+
 	RO_CLASS_COLOR["SHAMAN"].r = 0.0
 	RO_CLASS_COLOR["SHAMAN"].g = 0.44
 	RO_CLASS_COLOR["SHAMAN"].b = 0.87
-	
+
     RaidOrganizerDialogEinteilungTitle:SetText(L["ARRANGEMENT"])
-	
+
     for i=1, 40 do
         getglobal("RaidOrganizerDialogEinteilungRaiderpoolSlot"..i.."Label"):SetText(L["FREE"])
     end
@@ -770,7 +756,7 @@ function RaidOrganizer:OnInitialize() -- {{{
     RaidOrganizerDialogReset:SetText(L["RESET"])
 	RaidOrganizerDialogResetTab:SetText(L["RESETTAB"])
 	RaidOrganizerDialogAllRemain:SetText(L["ALLREMAIN"])
-	
+
 	RaidOrganizer_Tabs = {
 			{ "Heal", "Interface\\Icons\\Spell_Holy_Heal"},
 			{ "Tank", "Interface\\Icons\\INV_Shield_17" },
@@ -784,7 +770,7 @@ function RaidOrganizer:OnInitialize() -- {{{
 			{ "Raid Autofill", "Interface\\Icons\\Spell_holy_prayerofhealing"},
 			{ "Roles", "Interface\\Icons\\Ability_Rogue_Disguise"}
 	};
-		
+
 	for i = 1, TOTAL_TAB_NB, 1 do
 		getglobal("RaidOrganizer_Tab" .. i).tooltiptext = RaidOrganizer_Tabs[i][1];
 		getglobal("RaidOrganizer_Tab" .. i):SetNormalTexture(RaidOrganizer_Tabs[i][2]);
@@ -807,22 +793,22 @@ function RaidOrganizer:OnInitialize() -- {{{
 	end
     -- standard fuer dropdown setzen
     UIDropDownMenu_SetSelectedValue(RaidOrganizerDialogEinteilungSetsDropDown, RO_CurrentSet[RaidOrganizerDialog.selectedTab], RO_CurrentSet[RaidOrganizerDialog.selectedTab]);
-	
+
 	RaidOrganizer:SetBarTexture(self.db.char.barBackground)
 	RaidOrganizer:SetBarEdge(self.db.char.barEdges)
 	RaidOrganizerButtonsBar:SetScale(tonumber(self.db.char.scale))
 	self:ResizeBar(self.db.char.rows, self.db.char.spacing)
 	self:ShowBar()
-	
+
 	dewdrop:Register(RaidOrganizerButtonsBar, 'children', self.options.args.barDisplay)
-	
+
     self:LoadCurrentLabels()
-	
+
 	if not self.version then self.version = GetAddOnMetadata("RaidOrganizer", "Version") end
 	RaidOrganizer.RO_version_table = {}
 
 	-- RaidOrganizerMinimapButton_OnInitialize()
-	
+
 	if not UnitInRaid('player') then
 		IsPlayerInRaid = false
 		if self:IsActive() then
@@ -905,9 +891,9 @@ function RaidOrganizer:RefreshTables() --{{{
 		HUNTER = 0,
     }
     local gruppen = {0,0,0,0,0,0,0,0,0,0,}
-	
+
 	groupByName = {}
-	
+
 	if self:IsActive() then
 		for i=1, MAX_RAID_MEMBERS do
 			if UnitExists("raid"..i) then
@@ -952,7 +938,7 @@ function RaidOrganizer:RefreshTables() --{{{
 								gruppen[k] = gruppen[k] + 1
 							end
 						end
-						stats[engClass] = stats[engClass] + 1 
+						stats[engClass] = stats[engClass] + 1
 						isClassInTab = 1
 					end
 				end
@@ -979,9 +965,9 @@ function RaidOrganizer:RefreshTables() --{{{
 			end
 		end
     end
-	
+
 	groupIndex = 0
-	
+
     local function SortEinteilung(a, b) --{{{
 		if b == nil then return end
 		if a == nil then return end
@@ -1027,7 +1013,7 @@ function RaidOrganizer:RefreshTables() --{{{
             position[name][key] = index
 			hasGroupClass = false
 			emptyGroupClassIdx = 0
-			if key ~= 1 then 
+			if key ~= 1 then
 				local subgroupStr = "Group" .. groupByName[name]
 				local _, engClass = UnitClass(self:GetUnitByName(name))
 				for i=1, self.SLOT_PER_GROUP_PER_TAB[RaidOrganizerDialog.selectedTab][key - 1] do
@@ -1110,7 +1096,7 @@ function RaidOrganizer_SetTab(idx)
 		RaidOrganizerDialogBroadcastAutoSyncText:SetText("Sync Send")
 		RaidOrganizerDialogBroadcastAutoSync:SetChecked(false)
 	end
-	
+
 	RaidOrganizer:UpdateDialogValues();
 end
 
@@ -1118,7 +1104,7 @@ function RaidOrganizer:Dialog() -- {{{
     if GetNumRaidMembers() == 0 then
         self:ResetData()
     end
-    
+
     if RaidOrganizerDialog:IsShown() then
         RaidOrganizerDialog:Hide()
     else
@@ -1150,7 +1136,7 @@ function RaidOrganizer:UpdateLayoutSize()
 		else
 			RaidOrganizerDialogEinteilungRaiderpool:SetWidth(size)
 		end
-		for i=1, 80 do	
+		for i=1, 80 do
 			if i < 41 then
 				getglobal("RaidOrganizerDialogEinteilungRaiderpoolSlot"..i):SetWidth(size)
 				if i > 24 then
@@ -1164,10 +1150,10 @@ function RaidOrganizer:UpdateLayoutSize()
 			getglobal("RaidOrganizerDialogButton"..i):SetWidth(size)
 		end
 	end
-	
+
 	--if too many people in raid
 	local total_remain = 0
-	if einteilung[1] then 
+	if einteilung[1] then
 		total_remain = table.getn(einteilung[1])
 	end
 	updateAnchor()
@@ -1193,7 +1179,7 @@ function RaidOrganizer:UpdateLayoutSize()
 	elseif total_remain <= 24 and RaidOrganizerDialogEinteilungHealGroup1:GetWidth() ~= 98 then
 		resizeLayout(98, false)
 	end
-	
+
 	local classes = classTab[RaidOrganizerDialog.selectedTab]
 	for group = 1,  MAX_GROUP_NB do
 		if RaidOrganizer.SLOT_PER_GROUP_PER_TAB[RaidOrganizerDialog.selectedTab][group] == 0 then
@@ -1249,7 +1235,7 @@ function RaidOrganizer:UpdateGroupClassTextures()
 						slotbutton:SetTexture(0.1, 0.1, 0.1)
 					else
 						local _,_,group = string.find(groupclasses[j][i], "Group(%d)")
-						if group then 
+						if group then
 							slotbutton:SetTexture(1/group, 0, 0, 0.5)
 						else
 							slotbutton:SetTexture(0.1, 0.1, 0.1)
@@ -1322,7 +1308,7 @@ function RaidOrganizer:UpdateRaiderLayout()
 				end
 				button:SetPoint("TOP", "RaidOrganizerDialogEinteilungHealGroup"..j.."Slot"..i)
 				button:Show()
-				
+
 				button.username = einteilung[j+1][i]
 				zaehler = zaehler + 1
 			end
@@ -1340,7 +1326,7 @@ function RaidOrganizer:UpdateLabelsAndSetsLayout()
 
     RaidOrganizerDialogBroadcastChannelEditbox:SetText(self.db.char.chan)
 
-	
+
     local function RaidOrganizer_changeSet(set)
         UIDropDownMenu_SetSelectedValue(RaidOrganizerDialogEinteilungSetsDropDown, set, set)
         -- RO_RaiderTable temp save
@@ -1358,7 +1344,7 @@ function RaidOrganizer:UpdateLabelsAndSetsLayout()
 		self:UpdateLabelsAndSetsLayout()
     end
     local function RaidOrganizerDropDown_Initialize()
-        local selectedValue = UIDropDownMenu_GetSelectedValue(RaidOrganizerDialogEinteilungSetsDropDown)  
+        local selectedValue = UIDropDownMenu_GetSelectedValue(RaidOrganizerDialogEinteilungSetsDropDown)
         local info
 
         for key, value in pairs(self.db.account.sets[RaidOrganizerDialog.selectedTab]) do
@@ -1367,14 +1353,14 @@ function RaidOrganizer:UpdateLabelsAndSetsLayout()
             info.value = key
             info.func = RaidOrganizer_changeSet
             info.arg1 = key
-            if ( info.value == selectedValue ) then 
-                info.checked = 1; 
+            if ( info.value == selectedValue ) then
+                info.checked = 1;
             end
             UIDropDownMenu_AddButton(info);
         end
     end
-    -- }}} 
-    UIDropDownMenu_Initialize(RaidOrganizerDialogEinteilungSetsDropDown, RaidOrganizerDropDown_Initialize); 
+    -- }}}
+    UIDropDownMenu_Initialize(RaidOrganizerDialogEinteilungSetsDropDown, RaidOrganizerDropDown_Initialize);
     UIDropDownMenu_Refresh(RaidOrganizerDialogEinteilungSetsDropDown)
     UIDropDownMenu_SetWidth(150, RaidOrganizerDialogEinteilungSetsDropDown);
 end
@@ -1437,7 +1423,7 @@ end -- }}}
 function RaidOrganizer:BuildMessages() -- {{{
     local messages = {}
     table.insert(messages, L["HEALARRANGEMENT" .. tostring(RaidOrganizerDialog.selectedTab)]..":")
-    for i=1, MAX_GROUP_NB do 
+    for i=1, MAX_GROUP_NB do
 		if self.SLOT_PER_GROUP_PER_TAB[RaidOrganizerDialog.selectedTab][i] > 0 then
 			local header = getglobal("RaidOrganizerDialogEinteilungHealGroup"..i.."Label"):GetText()
 			if getn(einteilung[i+1]) ~= 0 then
@@ -1488,12 +1474,12 @@ function RaidOrganizer:RaiderOnClick(arg1)
 		local _,_,name = string.find(getglobal(this:GetName() .. "Label"):GetText(), "(%a+)")
 		if RO_RaiderTable[RaidOrganizerDialog.selectedTab][name][1] ~= 0 then
 			RO_RaiderTable[RaidOrganizerDialog.selectedTab][name][1] = 0
-			for grp = 1, MAX_GROUP_NB do 
+			for grp = 1, MAX_GROUP_NB do
 				if self.SLOT_PER_GROUP_PER_TAB[RaidOrganizerDialog.selectedTab][grp] > 0 then
 					RO_RaiderTable[RaidOrganizerDialog.selectedTab][name][grp + 1] = nil
 				end
 			end
-		else 
+		else
 			RO_RaiderTable[RaidOrganizerDialog.selectedTab][name][1] = 1
 		end
 		self:UpdateDialogValues()
@@ -1514,10 +1500,10 @@ end -- }}}
 function RaidOrganizer:RaiderOnDragStop() -- {{{
 	local _,_,name = string.find(getglobal(this:GetName() .. "Label"):GetText(), "(%a+)")
 	if RO_RaiderTable[RaidOrganizerDialog.selectedTab][name][1] == 0 then return end
-	
+
     this:SetFrameLevel(level_of_button)
     this:StopMovingOrSizing()
-	
+
 	local pools = {"RaidOrganizerDialogEinteilungRaiderpool"}
 	for group = 1, MAX_GROUP_NB do
 		for slot = 1, 30 do
@@ -1589,7 +1575,7 @@ function RaidOrganizer:EditGroupLabel(group) -- {{{
         return
     end
     change_id = group:GetID()
-    StaticPopup_Show("RaidOrganizer_EDITLABEL", group:GetID())    
+    StaticPopup_Show("RaidOrganizer_EDITLABEL", group:GetID())
 end -- }}}
 
 function RaidOrganizer:SaveNewLabel(id, text) -- {{{
@@ -1646,7 +1632,7 @@ function RaidOrganizer:SetSave() -- {{{
     end
     self.db.account.sets[RaidOrganizerDialog.selectedTab][RO_CurrentSet[RaidOrganizerDialog.selectedTab]].GroupNames = {}
     self.db.account.sets[RaidOrganizerDialog.selectedTab][RO_CurrentSet[RaidOrganizerDialog.selectedTab]].GroupClasses = {}
-    for i=1, MAX_GROUP_NB do 
+    for i=1, MAX_GROUP_NB do
 		if self.SLOT_PER_GROUP_PER_TAB[RaidOrganizerDialog.selectedTab][i] > 0 then
 			self.db.account.sets[RaidOrganizerDialog.selectedTab][RO_CurrentSet[RaidOrganizerDialog.selectedTab]].GroupNames[i] = grouplabels[i]
 			self.db.account.sets[RaidOrganizerDialog.selectedTab][RO_CurrentSet[RaidOrganizerDialog.selectedTab]].GroupClasses[i] = {}
@@ -1769,7 +1755,7 @@ function RaidOrganizer:ReplaceTokens(str) -- {{{
                 UnitExists("raid"..CT_RATarget.MainTanks[i][1]) and
                 UnitName("raid"..CT_RATarget.MainTanks[i][1]) == CT_RATarget.MainTanks[i][2]
                 then
-                s = s.."("..CT_RATarget.MainTanks[i][2]..")"      
+                s = s.."("..CT_RATarget.MainTanks[i][2]..")"
             end
         elseif oRAOMainTank then
             if oRAOMainTank.core.maintanktable[i] and
@@ -1833,7 +1819,7 @@ function RaidOrganizer:CreateClassMenu(group, slot)
 						 'checked', groupclasses[group][slot] == class,
 						 'func', function() if groupclasses[group][slot] == class then groupclasses[group][slot] = nil else groupclasses[group][slot] = class end self:RefreshTables(); self:UpdateGroupClassTextures(); dewdrop:Close() end)
 	end
-	if RaidOrganizerDialog.selectedTab == RAID_PLACEMENT_TAB_INDEX then 
+	if RaidOrganizerDialog.selectedTab == RAID_PLACEMENT_TAB_INDEX then
 		for i = 1, 8 do
 		local class = "Group" .. tostring(i)
 		dewdrop:AddLine( 'text', class,
@@ -2028,7 +2014,7 @@ function RaidOrganizer:AutoFill() -- {{{
 	self:RefreshTables()
 	local function shuffleTable( t )
 		if not t then return end
-		local rand = math.random 
+		local rand = math.random
 		local iterations = table.getn(t)
 		local j
 		for i = iterations, 2, -1 do
@@ -2141,8 +2127,8 @@ function RaidOrganizer:ResizeBar(nbRow, spacing)
 end
 
 function RaidOrganizer:SetBarTexture(bgfile)
-	if barBackgroundTextures[bgfile] then 
-		self.db.char.barBackground = bgfile; 
+	if barBackgroundTextures[bgfile] then
+		self.db.char.barBackground = bgfile;
 		ROBar_backdrop.bgFile = bgfile;
 		RaidOrganizerButtonsBar:SetBackdrop(nil);
 		RaidOrganizerButtonsBar:SetBackdrop(ROBar_backdrop);
@@ -2151,8 +2137,8 @@ function RaidOrganizer:SetBarTexture(bgfile)
 end
 
 function RaidOrganizer:SetBarEdge(edgefile)
-	if barBackgroundEdges[edgefile] then 
-		self.db.char.barEdges = edgefile; 
+	if barBackgroundEdges[edgefile] then
+		self.db.char.barEdges = edgefile;
 		ROBar_backdrop.edgeFile = edgefile;
 		RaidOrganizerButtonsBar:SetBackdrop(nil);
 		RaidOrganizerButtonsBar:SetBackdrop(ROBar_backdrop);
@@ -2163,7 +2149,7 @@ end
 
 function RaidOrganizer:UpdateAlpha()
 	local alphaValue = 1
-	for i=1, SYNC_TAB_NB do 
+	for i=1, SYNC_TAB_NB do
 		if newAttrib[i] == true then
 			alphaValue = loadstring("return RaidOrganizer.db.char.icon" .. i .. "alphahighlight")()
 		else
@@ -2202,7 +2188,7 @@ function RaidOrganizer:WriteTooltipText(idx)
 			elseif groupName == "STAR" then
 				color = {1, 1, 0};
 			end
-			
+
 			playerNameTable = {}
 			for nameChar in RO_RaiderTable[idx] do
 				if RO_RaiderTable[idx][nameChar][group + 1] then
@@ -2230,7 +2216,7 @@ function RaidOrganizer:WriteTooltipText(idx)
 					end
 				end
 			end
-			if (firstLine == true) then 
+			if (firstLine == true) then
 				GameTooltip:AddDoubleLine( groupName .. " : ", "", color[1], color[2], color[3], 1, 1, 1);
 			end
 			GameTooltip:AddDoubleLine( "________", "____________", 1, 1, 1, 1, 1, 1);
@@ -2243,7 +2229,7 @@ function RaidOrganizer:UpdateTableFromRole(name, role, class)
 	if class == "PRIEST" then
 		if not RO_RaiderTable[HEAL_TAB_INDEX][name] then RO_RaiderTable[HEAL_TAB_INDEX][name] = {} end
 		if not RO_RaiderTable[BUFF_PRIEST_TAB_INDEX][name] then RO_RaiderTable[BUFF_PRIEST_TAB_INDEX][name] = {} end
-		if role == "HEALER" then 
+		if role == "HEALER" then
 			if RO_RaiderTable[HEAL_TAB_INDEX][name][1] == 0 then RO_RaiderTable[HEAL_TAB_INDEX][name][1] = 1; end
 			if RO_RaiderTable[BUFF_PRIEST_TAB_INDEX][name][1] == 0 then RO_RaiderTable[BUFF_PRIEST_TAB_INDEX][name][1] = 1; end
 		else
@@ -2256,23 +2242,23 @@ function RaidOrganizer:UpdateTableFromRole(name, role, class)
 		if not RO_RaiderTable[HEAL_TAB_INDEX][name] then RO_RaiderTable[HEAL_TAB_INDEX][name] = {} end
 		if not RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name] then RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name] = {} end
 		if not RO_RaiderTable[TANK_TAB_INDEX][name] then RO_RaiderTable[TANK_TAB_INDEX][name] = {} end
-		if role == "HEALER" then 
+		if role == "HEALER" then
 			if RO_RaiderTable[HEAL_TAB_INDEX][name][1] == 0 then RO_RaiderTable[HEAL_TAB_INDEX][name][1] = 1; end
 			if RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name][1] == 0 then RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name][1] = 1; end
 			RO_RaiderTable[TANK_TAB_INDEX][name] = {};
-			RO_RaiderTable[TANK_TAB_INDEX][name][1] = 0; 
+			RO_RaiderTable[TANK_TAB_INDEX][name][1] = 0;
 		elseif role == "TANK" then
 			RO_RaiderTable[HEAL_TAB_INDEX][name] = {};
-			RO_RaiderTable[HEAL_TAB_INDEX][name][1] = 0; 
+			RO_RaiderTable[HEAL_TAB_INDEX][name][1] = 0;
 			RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name] = {};
 			RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name][1] = 0;
 			if RO_RaiderTable[TANK_TAB_INDEX][name][1] == 0 then RO_RaiderTable[TANK_TAB_INDEX][name][1] = 1; end
 		else
 			RO_RaiderTable[HEAL_TAB_INDEX][name] = {};
-			RO_RaiderTable[HEAL_TAB_INDEX][name][1] = 0; 
+			RO_RaiderTable[HEAL_TAB_INDEX][name][1] = 0;
 			if RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name][1] == 0 then RO_RaiderTable[BUFF_DRUID_TAB_INDEX][name][1] = 1; end
 			RO_RaiderTable[TANK_TAB_INDEX][name] = {};
-			RO_RaiderTable[TANK_TAB_INDEX][name][1] = 0; 
+			RO_RaiderTable[TANK_TAB_INDEX][name][1] = 0;
 		end
 	elseif class == "WARRIOR" then
 		if not RO_RaiderTable[TANK_TAB_INDEX][name] then RO_RaiderTable[TANK_TAB_INDEX][name] = {} end
@@ -2366,14 +2352,14 @@ function RaidOrganizer:RAID_ROSTER_UPDATE()
 end
 
 function RaidOrganizer:CHAT_MSG_ADDON(prefix, message, type, sender)
-	
-	if (prefix == "ROVersion") then 
+
+	if (prefix == "ROVersion") then
 		if self.b_versionQuery then
 			self.RO_version_table[sender] = message
 			self:TriggerEvent("RaidOrganizer_OnTooltipUpdate")
 		end
 	end
-	
+
 	if (prefix ~= "RaidOrganizer") then return end
 
 	if (type ~= "RAID") then return end
@@ -2396,7 +2382,7 @@ function RaidOrganizer:CHAT_MSG_ADDON(prefix, message, type, sender)
 	for i = 1, GetNumRaidMembers() do
 		local name, rank = GetRaidRosterInfo(i)
 		if name == sender then
-			if rank == 0 then	
+			if rank == 0 then
 				return
 			else
 				break
@@ -2413,7 +2399,7 @@ function RaidOrganizer:CHAT_MSG_ADDON(prefix, message, type, sender)
 	local _, _, tab_id, length  = string.find(message, pattern);
 	tab_id = tonumber(tab_id);
 	length = tonumber(length);
-	
+
 	if tab_id > SYNC_TAB_NB then
 		return
 	end
@@ -2425,12 +2411,12 @@ function RaidOrganizer:CHAT_MSG_ADDON(prefix, message, type, sender)
 		RO_RaiderTable[tab_id] = {}; -- message to reset tab
 		return
 	end
-	
+
 	for i = 1, length do
 		pattern = pattern .. '%s+(%a+)%s+(%d+)';
 	end
 	local sync_raider_table  = {string.find(message, pattern)};
-	
+
 	local charName;
 	local charGroup;
 	local value;
@@ -2439,7 +2425,7 @@ function RaidOrganizer:CHAT_MSG_ADDON(prefix, message, type, sender)
 		if not RO_RaiderTable[tab_id][charName] then
 			RO_RaiderTable[tab_id][charName] = {};
 		end
-		
+
 		for j = 1, string.len(sync_raider_table[4 + i * 2]) do
 			charGroup = tonumber(string.sub(sync_raider_table[4 + i * 2], j, j));
 			if charGroup >= 1 and charGroup <= MAX_GROUP_NB and self.SLOT_PER_GROUP_PER_TAB[tab_id][charGroup] > 0 then
@@ -2480,7 +2466,7 @@ function RaidOrganizer:AutoSync_OnClick()
 		RO_syncTab[RaidOrganizerDialog.selectedTab] = false
 	end
 end
-		
+
 function RaidOrganizer:ReorganizeRaid()
 	if RaidOrganizerDialogBroadcastAutoSync:GetChecked() == 1 then
 		if not IsRaidLeader() then return end
@@ -2512,7 +2498,7 @@ function RaidOrganizer:ReorganizeRaid()
 				backup_group = key
 			end
 		end
-			
+
 		if backup_group == 0 then DEFAULT_CHAT_FRAME:AddMessage("RaidOrganizer : Reorganize Raid can't be performed if raid is full. Remove a raider and try again.") 	return end
 
 		for i=1, MAX_RAID_MEMBERS do
@@ -2542,7 +2528,7 @@ function RaidOrganizer:ReorganizeRaid()
 									break
 								end
 							end
-							
+
 							if group_count[targetGroup] == 5 then
 								for targetTableIndex = 1, 5 do
 									targetID = raidIDPerGroup[targetGroup][targetTableIndex]
@@ -2598,7 +2584,7 @@ function RaidOrganizer:RaidOrganizer_SyncOnClick()
 		self:ReorganizeRaid()
 		return
 	end
-	
+
 	-- other tab, sync
 	if (RaidOrganizerDialogBroadcastAutoSync:GetChecked()) then
 		if not (IsRaidLeader() or IsRaidOfficer()) then
@@ -2625,10 +2611,10 @@ function RaidOrganizer:VersionQuery()
 	self.b_versionQuery = not self.b_versionQuery
 	self:TriggerEvent("RaidOrganizer_OnTooltipUpdate")
 	if self.b_versionQuery == false then return end
-	if (IsRaidLeader() or IsRaidOfficer()) then 
+	if (IsRaidLeader() or IsRaidOfficer()) then
 		self.RO_version_table = {}
 		SendAddonMessage("RaidOrganizer", "VQUERY 0", "RAID")
-	else 
+	else
 		RaidOrganizer.b_versionQuery = false
 		DEFAULT_CHAT_FRAME:AddMessage("You have to be raid lead or assistant to check raid version")
 	end
@@ -2647,10 +2633,10 @@ function RaidOrganizer:RaidOrganizer_SendSync(id)
 	else
 		tab_id = id;
 	end
-	
+
 	--Reset tab for destination
 	SendAddonMessage("RaidOrganizer", tab_id .. " 0", "RAID")
-	
+
 	for nameChar in RO_RaiderTable[tab_id] do
 		tmp_msg = "";
 		first = true;
@@ -2790,7 +2776,7 @@ function RaidOrganizer:TooltipUpdate(tablet)
 				'child_text2R', 1, 'child_text2G', 1, 'child_text2B', 1
 			)
 			local str1, str2 = "", "";
-			
+
 			cat2:AddLine("text", "|cffffffffWho is syncing :" .. "|r", 'size', 14);
 			cat2:AddLine("text", " ");
 			for i=1, SYNC_TAB_NB do
