@@ -28,7 +28,7 @@ local classTab = {}
 
 classTab = {
 {"PRIEST","DRUID","PALADIN","SHAMAN"},
-{"WARRIOR","DRUID"},
+{"WARRIOR","PALADIN","DRUID"},
 {"WARRIOR","ROGUE","MAGE"},
 {"MAGE","PRIEST","WARLOCK","ROGUE","HUNTER", "DRUID"},
 {"WARLOCK"},
