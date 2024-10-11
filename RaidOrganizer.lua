@@ -1214,7 +1214,7 @@ function RaidOrganizer:UpdateLayoutSize()
 				getglobal("RaidOrganizerDialogEinteilungStatsClass" .. i):SetText("")
 			end
 		end
-		local autoSizeStatsLUT = {37, 37, 57, 57, 75, 75, 94, 94}
+		local autoSizeStatsLUT = {37, 37, 57, 57, 75, 75, 94, 94, 94, 94, 94}
 		RaidOrganizerDialogEinteilungStats:SetHeight(autoSizeStatsLUT[table.getn(classTab[RaidOrganizerDialog.selectedTab])])
 	end
 end
