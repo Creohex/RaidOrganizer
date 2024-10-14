@@ -56,7 +56,7 @@ AceLocale:RegisterTranslation("RaidOrganizer", "enGB", function()
 		["HEALARRANGEMENT4"] = "Crowd Control arrangement",
 		["HEALARRANGEMENT5"] = "Curse arrangement",
 		["HEALARRANGEMENT6"] = "Intel Buff arrangement",
-		["HEALARRANGEMENT7"] = "Stam Buff arrangement",
+		["HEALARRANGEMENT7"] = "Priest Buff arrangement",
 		["HEALARRANGEMENT8"] = "MOTW arrangement",
         ["FFA"] = "ffa", -- was der rest machen darf
         ["NO_CHANNEL"] = "You must join channel %q before broadcasting the healing arrangement to it",
